@@ -1,0 +1,38 @@
+from __future__ import division
+import math
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import sklearn.datasets
+import sklearn.metrics as metrics
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
+# load the iris dataset
+dataset = sklearn.datasets.load_iris()
+# define feature vectors (X) and target (y)
+X = dataset.data
+y = dataset.target
+labels = dataset.target_names
+# <help:scikit_pca>
+# define the number of components to compute, recommend n_components < y_features
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X)
+
+# plot the first two principal components
+fig, ax = plt.subplots()
+plt.scatter(X_pca[:,0], X_pca[:,1])
+plt.grid()
+plt.title('PCA of the dataset')
+ax.set_xlabel('Component #1')
+ax.set_ylabel('Component #2')
+plt.show()
+# <help:scikit_pca>
+# eigendecomposition on the covariance matrix
+cov_mat = np.cov(X_pca.T)
+eig_vals, eig_vecs = np.linalg.eig(cov_mat)
+print('Eigenvectors \n%s' %eig_vecs)
+print('\nEigenvalues \n%s' %eig_vals)
+# <help:scikit_pca>
+# prints the percentage of overall variance explained by each component
+print(pca.explained_variance_ratio_)
